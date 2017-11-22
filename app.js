@@ -5,21 +5,30 @@ var SingleNews = Backbone.Model.extend({
   }
 });
 
-var AllNews = Backbone.Collection.extend({
+var News = Backbone.Collection.extend({
   model: SingleNews,
+
+  // Default value for sort column and directtion.
   sortColumn: 'title',
   sortDirection: 1,
+
+  // Sort handler for News collection.
+  // Sets the sort column and direction and triggers sort.
   sortNews: function(column, direction) {
     this.sortColumn = column;
     this.sortDirection = direction;
     this.sort();
   },
+
+  // Custom sorting based on the provided column and direction.
   comparator: function(news1, news2) {
+    // Get the values of given column.
     var value1 = news1.get(this.sortColumn).toLowerCase(),
         value2 = news2.get(this.sortColumn).toLowerCase();
 
     if (value1 == value2) return 0;
 
+    // Depending on the direction, compare and return a value.
     if (this.sortDirection == 1) {
        return value1 > value2 ? 1 : -1;
     } else {
@@ -37,11 +46,11 @@ var NewsItems = [
 ];
 
 
-var AllNewsView = Backbone.View.extend({
+var NewsView = Backbone.View.extend({
   el: $('tbody'),
   template: _.template($('#row-template').html()),
   initialize: function() {
-    this.collection = new AllNews();
+    this.collection = new News();
 
     var self = this;
     _.each(NewsItems, function(news) {
@@ -62,4 +71,4 @@ var AllNewsView = Backbone.View.extend({
   }
 });
 
-new AllNewsView;
+new NewsView;
