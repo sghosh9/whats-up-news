@@ -1,4 +1,5 @@
 
+  // Model for single news items.
   var SingleNews = Backbone.Model.extend({
     defaults: {
       title: '',
@@ -6,6 +7,7 @@
     }
   });
 
+  // Collection for collection of single news item models SingleNews.
   var News = Backbone.Collection.extend({
     model: SingleNews,
 
@@ -13,11 +15,8 @@
     sortColumn: 'title',
     sortDirection: 1,
 
-    // Sort handler for News collection.
-    // Sets the sort column and direction and triggers sort.
-    sortNews: function(column, direction) {
-      this.sortColumn = column;
-      this.sortDirection = direction;
+    // Sort handler for News collection to trigger sorting of collection.
+    sortNews: function() {
       this.sort();
     },
 
@@ -48,6 +47,7 @@
     {title: 'sit', category: 'War'},
     {title: 'amet', category: 'Page 3'},
   ];
+  // Creating a collection of news objects NewsItems.
   var NewsCollection = new News();
   _.each(NewsItems, function(news) {
     var NewsModel = new SingleNews(news);
@@ -55,15 +55,10 @@
   });
 
 
-
-
+  // View for each table row of news item.
   var NewsView = Backbone.View.extend({
     tagName: 'tr',
     template: _.template($('#row-template').html()),
-
-    initialize: function() {
-      this.listenTo(this.model, 'change', this.render);
-    },
 
     render: function() {
       this.$el.html(this.template(this.model.attributes));
@@ -71,34 +66,48 @@
     }
   });
 
+  // View for entire table.
   var NewsTableView = Backbone.View.extend({
     el: $('table'),
     events: {
       'click th': 'headerClick'
     },
     initialize: function() {
-      this.listenTo(NewsCollection, 'sort', this.refreshTable);
+      this.listenTo(NewsCollection, 'sort', this.render);
 
-      this.refreshTable();
+      this.render();
     },
 
     // Handler for click event on table header.
     headerClick: function(event) {
-      console.log(event);
+      var clickedColumn = $(event.currentTarget),
+          newSort = clickedColumn.attr('column'),
+          currentSort = NewsCollection.sortColumn;
+
+      // Set the sort column of the collection to the new column.
+      NewsCollection.sortColumn = newSort;
+
+      // If same column was clicked ie. current sort reversed, we will just change the direction.
+      if (newSort == currentSort) {
+        NewsCollection.sortDirection *= -1;
+      }
+      // Else, set the direction to default.
+      else {
+        NewsCollection.sortDirection = 1;
+      }
+
+      // Trigger sorting of collection after above updates.
+      NewsCollection.sortNews();
     },
 
     // Handler for sort event on collection.
-    refreshTable: function() {
-      console.log(this);
+    render: function() {
       var tableBody = this.$('tbody');
+      tableBody.empty();
       NewsCollection.each(function(news) {
         var newsRow = new NewsView({model: news});
         tableBody.append(newsRow.render().el);
       });
-    },
-
-    render: function() {
-      console.log('rendering');
       return this;
     }
   });
