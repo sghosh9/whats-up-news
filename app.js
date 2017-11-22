@@ -7,16 +7,24 @@ var SingleNews = Backbone.Model.extend({
 
 var AllNews = Backbone.Collection.extend({
   model: SingleNews,
-  sortNews: function(column) {
+  sortColumn: 'title',
+  sortDirection: 1,
+  sortNews: function(column, direction) {
+    this.sortColumn = column;
+    this.sortDirection = direction;
     this.sort();
   },
   comparator: function(news1, news2) {
-    var value1 = news1.get('title').toLowerCase(),
-        value2 = news2.get('title').toLowerCase();
+    var value1 = news1.get(this.sortColumn).toLowerCase(),
+        value2 = news2.get(this.sortColumn).toLowerCase();
 
     if (value1 == value2) return 0;
 
-    return value1 > value2 ? 1 : -1;
+    if (this.sortDirection == 1) {
+       return value1 > value2 ? 1 : -1;
+    } else {
+       return value1 < value2 ? 1 : -1;
+    }
   }
 });
 
