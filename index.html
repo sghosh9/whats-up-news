@@ -9,6 +9,7 @@
     <table>
       <thead>
         <tr>
+          <th column="id">ID</th>
           <th column="title">Title</th>
           <th column="category">Category</th>
         </tr>
@@ -19,6 +20,7 @@
     </table>
 
     <script type="text/template" id="row-template">
+      <td><%= id %></td>
       <td><%= title %></td>
       <td><%= category %></td>
     </script>

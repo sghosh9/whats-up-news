@@ -12,7 +12,7 @@
     model: SingleNews,
 
     // Default value for sort column and directtion.
-    sortColumn: 'title',
+    sortColumn: 'id',
     sortDirection: 1,
 
     // Sort handler for News collection to trigger sorting of collection.
@@ -23,8 +23,11 @@
     // Custom sorting based on the provided column and direction.
     comparator: function(news1, news2) {
       // Get the values of given column.
-      var value1 = news1.get(this.sortColumn).toLowerCase(),
-          value2 = news2.get(this.sortColumn).toLowerCase();
+      var value1 = news1.get(this.sortColumn),
+          value2 = news2.get(this.sortColumn);
+
+      value1 = (typeof value1 == 'string') ? value1.toLowerCase() : value1;
+      value2 = (typeof value2 == 'string') ? value2.toLowerCase() : value2;
 
       if (value1 == value2) return 0;
 
@@ -41,11 +44,11 @@
 
   // Dummy data
   var NewsItems = [
-    {title: 'Lorem', category: 'Food'},
-    {title: 'ipsum', category: 'Politics'},
-    {title: 'dolor', category: 'Movies'},
-    {title: 'sit', category: 'War'},
-    {title: 'amet', category: 'Page 3'},
+    {id: 1, title: 'Lorem', category: 'Food'},
+    {id: 2, title: 'ipsum', category: 'Politics'},
+    {id: 3, title: 'dolor', category: 'Movies'},
+    {id: 4, title: 'sit', category: 'War'},
+    {id: 5, title: 'amet', category: 'Page 3'},
   ];
   // Creating a collection of news objects NewsItems.
   var NewsCollection = new News();
