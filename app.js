@@ -6,13 +6,26 @@ var SingleNews = Backbone.Model.extend({
 });
 
 var AllNews = Backbone.Collection.extend({
-  model: SingleNews
+  model: SingleNews,
+  sortNews: function(column) {
+    this.sort();
+  },
+  comparator: function(news1, news2) {
+    var value1 = news1.get('title').toLowerCase(),
+        value2 = news2.get('title').toLowerCase();
+
+    if (value1 == value2) return 0;
+
+    return value1 > value2 ? 1 : -1;
+  }
 });
 
 var NewsItems = [
-  {title: 'News 1', category: 'Food'},
-  {title: 'News 2', category: 'Movies'},
-  {title: 'News 3', category: 'Politics'},
+  {title: 'Lorem', category: 'Food'},
+  {title: 'ipsum', category: 'Politics'},
+  {title: 'dolor', category: 'Movies'},
+  {title: 'sit', category: 'War'},
+  {title: 'amet', category: 'Page 3'},
 ];
 
 
