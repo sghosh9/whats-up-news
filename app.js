@@ -1,18 +1,21 @@
 $(function() {
 
+  var apiKey = '27c99f6f19554a2b84566fb9d1744b10'
+  var apiURL = 'https://newsapi.org/v2/everything?apiKey=' + apiKey;
+
+  function isAlphaNumeric(input) {
+    var regExp = /^[A-Za-z0-9\-]+$/;
+    return (input.match(regExp));
+  };
+
   // Model for single news items.
   var NewsModel = Backbone.Model.extend({
     defaults: {
       title: '',
-      author: '',
+      // author: '',
       // publishedAt
       url: '',
       description: ''
-    },
-
-    parse: function (resp) {
-      console.log(resp);
-      return resp;
     }
   });
 
@@ -20,16 +23,15 @@ $(function() {
   var NewsCollection = Backbone.Collection.extend({
     model: NewsModel,
 
-    url: 'https://newsapi.org/v2/everything?q=bitcoin&apiKey=27c99f6f19554a2b84566fb9d1744b10&id',
+    url: apiURL,
 
     // Parsing to pass just articles array inside the response.
     parse: function(response) {
-      console.log(response);
       return response.articles;
     },
 
     // Default value for sort column and directtion.
-    sortColumn: 'id',
+    sortColumn: '',
     sortDirection: 1,
 
     // Sort handler for News collection to trigger sorting of collection.
@@ -75,14 +77,8 @@ $(function() {
       'click th': 'headerClick'
     },
     initialize: function() {
-      this.listenTo(this.collection, 'change', this.laugh);
-      this.listenTo(this.collection, 'sort', this.render);
-
-      this.render();
-    },
-
-    laugh: function() {
-      console.log('this is a laugh');
+      // Re-render the table on both sort and sync events on the collection.
+      this.listenTo(this.collection, 'sort sync', this.render);
     },
 
     // Handler for click event on table header.
@@ -109,33 +105,41 @@ $(function() {
 
     // Handler for sort event on collection.
     render: function() {
+      // Store the tbody element for multiple uses.
       var tableBody = this.$('tbody');
+      // Make the table entry before appending results.
       tableBody.empty();
-      console.log(_(this.collection.models));
-      // _(this.collection.models).each(function(news) {
-      //   var newsRow = new NewsView({model: news});
-      //   tableBody.append(newsRow.render().el);
-      // });
+
+      // For each model, call the NewsView view to render each row.
+      _(this.collection.models).each(function(news) {
+        var newsRow = new NewsView({model: news});
+        tableBody.append(newsRow.render().el);
+      });
       return this;
     }
   });
 
   // Model for search form.
   var SearchModel = Backbone.Model.extend({
-    defaults: {
-      search: '',
+    searchInput: '',
+    initialize: function() {
+      // Create a NewsCollection collection with parsing on its model enabled.
+      this.newscollection = new NewsCollection({parse: true});
+      // Pass it to the NewsTableView view.
+      new NewsTableView({collection: this.newscollection});
     },
     newsSearch: function(input) {
-      console.log('searched: ' + input);
-      // Create a NewsCollection collection with parsing on its model enabled.
-      var NewsToday = new NewsCollection({parse: true});
       // Fetch the data from the collection's url.
-      NewsToday.fetch({
+      this.newscollection.fetch({
+        reset: true,
+        data: {
+          q: input
+        },
         success: function(response) {
-          console.log(response);
+          // console.log(response);
         },
         error: function(response) {
-          console.log(response);
+          // console.log(response);
         },
       });
     }
@@ -150,9 +154,17 @@ $(function() {
        }, 500),
     },
     triggerSearch: function(event) {
-      var searchInput = $(event.currentTarget);
-      // If there is a value entered, start the news search with the value.
-      if (searchInput.val()) {
+      var searchInput = $(event.currentTarget),
+          searchInputPrev = this.model.searchInput,
+          input = searchInput.val();
+
+      // If
+      //   value is enetered, AND
+      //   value enetered is alphanumeric, AND
+      //   value is new compared to the old searched valued
+      // then, start the news search with the value.
+      if (input && isAlphaNumeric(input) && input != searchInputPrev) {
+        this.model.searchInput = input;
         this.model.newsSearch(searchInput.val());
       }
     }

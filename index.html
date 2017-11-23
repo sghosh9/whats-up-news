@@ -14,9 +14,8 @@
     <table>
       <thead>
         <tr>
-          <th column="id">ID</th>
           <th column="title">Title</th>
-          <th column="category">Category</th>
+          <th column="description">Description</th>
         </tr>
       </thead>
       <tbody>
@@ -25,9 +24,8 @@
     </table>
 
     <script type="text/template" id="row-template">
-      <td><%= id %></td>
-      <td><%= title %></td>
-      <td><%= category %></td>
+      <td><a href="<%= url %>"><%= title %></a></td>
+      <td><%= description %></td>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
