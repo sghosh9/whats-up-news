@@ -26,12 +26,13 @@ $(function() {
   // Model for single news items.
   var NewsModel = Backbone.Model.extend({
     defaults: {
+      publishedAt: 0,
       title: '',
+      url: '',
       author: '',
       source: '',
-      publishedAt: 0,
-      url: '',
-      description: ''
+      // description: '',
+      // urlToImage: ''
     },
     parse: function(response) {
 
@@ -225,23 +226,7 @@ $(function() {
   });
 
 
-  // Dummy data
-  var NewsItems = [
-    {id: 1, title: 'Lorem', category: 'Food'},
-    {id: 2, title: 'ipsum', category: 'Politics'},
-    {id: 3, title: 'dolor', category: 'Movies'},
-    {id: 4, title: 'sit', category: 'War'},
-    {id: 5, title: 'amet', category: 'Page 3'},
-  ];
-
-  // // Creating a collection of news objects NewsItems.
-  // var NewsToday = new NewsCollection();
-  // _.each(NewsItems, function(news) {
-  //   var NewsItem = new NewsModel(news);
-  //   NewsToday.add(NewsItem);
-  // });
-
-  // new NewsTableView({collection: NewsToday});
+  // Trigger the app here.
 
   // Create a new SearchModel model.
   var newsSearch = new SearchModel();
