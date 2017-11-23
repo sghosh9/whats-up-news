@@ -4,32 +4,36 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>What's up? News Flash!</title>
-
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css">
   </head>
   <body>
 
-    <form id="news-search" >
-      <input type="text" name="search" placeholder="Search away!">
-    </form>
+    <section id="search">
+      <form id="news-search" >
+        <input type="text" class="field-text" name="search" placeholder="Search away!">
+      </form>
+    </section>
 
-    <table>
-      <thead>
-        <tr>
-          <th column="title">Title</th>
-          <th column="author">Author</th>
-          <th column="source">Source</th>
-          <th column="publishedAt">Published</th>
-          <!-- <th column="description">Description</th> -->
-        </tr>
-      </thead>
-      <tbody>
+    <section id="results">
+      <table>
+        <thead>
+          <tr>
+            <th column="title"><span>Title</span></th>
+            <th column="author"><span>Author</span></th>
+            <th column="source"><span>Source</span></th>
+            <th column="publishedAt"><span>Published</span></th>
+            <!-- <th column="description">Description</th> -->
+          </tr>
+        </thead>
+        <tbody>
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </section>
 
     <script type="text/template" id="row-template">
-      <td><a href="<%= url %>"><%= title %></a></td>
+      <td><a href="<%= url %>" target="_blank"><%= title %></a></td>
       <td><%= author %></td>
       <td><%= source %></td>
       <td><%= _.template.formatDate(publishedAt) %></td>

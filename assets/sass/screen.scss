@@ -4,3 +4,82 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
+@import "variables";
+@import "mixins";
+
+
+
+// Global
+* {
+  box-sizing: border-box;
+}
+body {
+  color: $theme-light-font-color;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+}
+a {
+  text-decoration: none;
+  color: darken($baseColor, 5%);
+  &:hover, &:focus, &:active {
+    color: lighten($baseColor, 20%);
+  }
+}
+section {
+  padding: 20px 15px;
+}
+table {
+  th {
+    background: $baseColor;
+    border: 1px solid $theme-dark-font-color;
+    color: $theme-dark-font-color;
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    width: 10%;
+    &:first-child {
+      width: 50%;
+    }
+  }
+  tbody {
+    tr {
+      border: 5px solid $theme-dark-font-color;
+      border-left: none;
+      border-right: none;
+      td {
+        padding: 25px;
+      }
+      &:nth-child(odd) {
+        background: lighten($baseColor, 55%);
+      }
+    }
+  }
+}
+.field-text {
+  @extend %text-field;
+  @include theme-text-field;
+}
+
+
+// Search
+#search {
+  background: $color-black;
+  padding: 20px 15px;
+  text-align: center;
+
+  input {
+    @include theme-text-field('dark', 30px, 0 0 20px);
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+// Results
+#results {
+  table {
+    width: 100%;
+    th {
+      text-transform: uppercase;
+    }
+  }
+}

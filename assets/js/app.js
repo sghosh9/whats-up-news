@@ -6,7 +6,7 @@ var appGlobal = (function () {
     },
     // Returns null if input string is not alphanumeric.
     isAlphaNumeric: function (input) {
-      var regExp = /^[A-Za-z0-9\-]+$/;
+      var regExp = /^[A-Za-z0-9\-\s]+$/;
       return (input.match(regExp));
     }
   }
@@ -193,7 +193,8 @@ $(function() {
       var searchInput = $(event.currentTarget),
           searchInputPrev = this.model.searchInput,
           input = searchInput.val();
-
+      console.log(input);
+      console.log(appGlobal.isAlphaNumeric(input));
       // If
       //   value is enetered, AND
       //   value enetered is alphanumeric, AND
