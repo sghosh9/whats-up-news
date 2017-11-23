@@ -66,7 +66,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 * {
   box-sizing: border-box;
-  transition: all 0.25s ease;
+  transition: all 0.5s ease;
+}
+
+html, body {
+  height: 100%;
 }
 
 body {
@@ -118,14 +122,25 @@ table tbody tr:nth-child(odd) {
   background: #222222;
   padding: 20px 15px;
   text-align: center;
+  height: 100px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+#search form {
+  -webkit-flex: 1;
+  flex: 1;
 }
 #search input {
   border-bottom: 1px solid #FFFFFF;
   color: #FFFFFF;
   font-size: 30px;
   padding: 0 0 20px;
-  width: 90%;
-  max-width: 600px;
+  width: 95%;
+  max-width: 800px;
 }
 
 #results table {
@@ -155,4 +170,11 @@ table tbody tr:nth-child(odd) {
 }
 #results table td.col-date {
   text-align: center;
+}
+
+.no-results #search {
+  height: 100%;
+}
+.no-results #results {
+  display: none;
 }

@@ -4,6 +4,7 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
+@import "compass/css3";
 @import "variables";
 @import "mixins";
 
@@ -12,7 +13,10 @@
 // Global
 * {
   box-sizing: border-box;
-  transition: all 0.25s ease;
+  transition: all 0.5s ease;
+}
+html, body {
+  height: 100%;
 }
 body {
   color: $theme-light-font-color;
@@ -63,11 +67,17 @@ table {
   background: $color-black;
   padding: 20px 15px;
   text-align: center;
-
+  height: 100px;
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content(center);
+  form {
+    @include flex(1);
+  }
   input {
     @include theme-text-field('dark', 30px, 0 0 20px);
-    width: 90%;
-    max-width: 600px;
+    width: 95%;
+    max-width: 800px;
   }
 }
 
@@ -103,5 +113,15 @@ table {
     td.col-date {
       text-align: center;
     }
+  }
+}
+
+// Default screen
+.no-results {
+  #search {
+    height: 100%;
+  }
+  #results {
+    display: none;
   }
 }

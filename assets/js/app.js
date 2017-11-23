@@ -191,9 +191,11 @@ $(function() {
           q: input
         },
         success: function(response) {
+          $('body').removeClass('no-results')
           // console.log(response);
         },
         error: function(response) {
+          $('body').addClass('no-results')
           // console.log(response);
         },
       });
