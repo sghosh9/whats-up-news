@@ -1,15 +1,32 @@
+$(function() {
 
   // Model for single news items.
   var NewsModel = Backbone.Model.extend({
     defaults: {
       title: '',
-      category: ''
+      author: '',
+      // publishedAt
+      url: '',
+      description: ''
+    },
+
+    parse: function (resp) {
+      console.log(resp);
+      return resp;
     }
   });
 
   // Collection for collection of single news item models NewsModel.
   var NewsCollection = Backbone.Collection.extend({
     model: NewsModel,
+
+    url: 'https://newsapi.org/v2/everything?q=bitcoin&apiKey=27c99f6f19554a2b84566fb9d1744b10&id',
+
+    // Parsing to pass just articles array inside the response.
+    parse: function(response) {
+      console.log(response);
+      return response.articles;
+    },
 
     // Default value for sort column and directtion.
     sortColumn: 'id',
@@ -58,41 +75,47 @@
       'click th': 'headerClick'
     },
     initialize: function() {
-      this.listenTo(NewsToday, 'sort', this.render);
+      this.listenTo(this.collection, 'change', this.laugh);
+      this.listenTo(this.collection, 'sort', this.render);
 
       this.render();
+    },
+
+    laugh: function() {
+      console.log('this is a laugh');
     },
 
     // Handler for click event on table header.
     headerClick: function(event) {
       var clickedColumn = $(event.currentTarget),
           newSort = clickedColumn.attr('column'),
-          currentSort = NewsToday.sortColumn;
+          currentSort = this.collection.sortColumn;
 
       // Set the sort column of the collection to the new column.
-      NewsToday.sortColumn = newSort;
+      this.collection.sortColumn = newSort;
 
       // If same column was clicked ie. current sort reversed, we will just change the direction.
       if (newSort == currentSort) {
-        NewsToday.sortDirection *= -1;
+        this.collection.sortDirection *= -1;
       }
       // Else, set the direction to default.
       else {
-        NewsToday.sortDirection = 1;
+        this.collection.sortDirection = 1;
       }
 
       // Trigger sorting of collection after above updates.
-      NewsToday.sortNews();
+      this.collection.sortNews();
     },
 
     // Handler for sort event on collection.
     render: function() {
       var tableBody = this.$('tbody');
       tableBody.empty();
-      NewsToday.each(function(news) {
-        var newsRow = new NewsView({model: news});
-        tableBody.append(newsRow.render().el);
-      });
+      console.log(_(this.collection.models));
+      // _(this.collection.models).each(function(news) {
+      //   var newsRow = new NewsView({model: news});
+      //   tableBody.append(newsRow.render().el);
+      // });
       return this;
     }
   });
@@ -104,6 +127,17 @@
     },
     newsSearch: function(input) {
       console.log('searched: ' + input);
+      // Create a NewsCollection collection with parsing on its model enabled.
+      var NewsToday = new NewsCollection({parse: true});
+      // Fetch the data from the collection's url.
+      NewsToday.fetch({
+        success: function(response) {
+          console.log(response);
+        },
+        error: function(response) {
+          console.log(response);
+        },
+      });
     }
   });
 
@@ -117,6 +151,7 @@
     },
     triggerSearch: function(event) {
       var searchInput = $(event.currentTarget);
+      // If there is a value entered, start the news search with the value.
       if (searchInput.val()) {
         this.model.newsSearch(searchInput.val());
       }
@@ -132,14 +167,19 @@
     {id: 4, title: 'sit', category: 'War'},
     {id: 5, title: 'amet', category: 'Page 3'},
   ];
-  // Creating a collection of news objects NewsItems.
-  var NewsToday = new NewsCollection();
-  _.each(NewsItems, function(news) {
-    var NewsItem = new NewsModel(news);
-    NewsToday.add(NewsItem);
-  });
 
-  new NewsTableView;
+  // // Creating a collection of news objects NewsItems.
+  // var NewsToday = new NewsCollection();
+  // _.each(NewsItems, function(news) {
+  //   var NewsItem = new NewsModel(news);
+  //   NewsToday.add(NewsItem);
+  // });
 
+  // new NewsTableView({collection: NewsToday});
+
+  // Create a new SearchModel model.
   var newsSearch = new SearchModel();
+  // Pass it to the SearchView view.
   new SearchView({model: newsSearch});
+
+});
