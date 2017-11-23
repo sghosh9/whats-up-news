@@ -21,10 +21,10 @@
       <table>
         <thead>
           <tr>
-            <th column="title"><span>Title</span></th>
-            <th column="author"><span>Author</span></th>
-            <th column="source"><span>Source</span></th>
-            <th column="publishedAt"><span>Published</span></th>
+            <th class="col-date" column="publishedAt"><span>Published</span></th>
+            <th class="col-title" column="title"><span>Title</span></th>
+            <th class="col-author" column="author"><span>Author</span></th>
+            <th class="col-source" column="source"><span>Source</span></th>
             <!-- <th column="description">Description</th> -->
           </tr>
         </thead>
@@ -35,10 +35,10 @@
     </section>
 
     <script type="text/template" id="row-template">
-      <td><a href="<%= url %>" target="_blank"><%= title %></a></td>
-      <td><%= author %></td>
-      <td><%= source %></td>
-      <td><%= _.template.formatDate(publishedAt) %></td>
+      <td class="col-date"><%= _.template.formatDate(publishedAt) %></td>
+      <td class="col-title"><a href="<%= url %>" target="_blank"><%= title %></a></td>
+      <td class="col-author"><%= author %></td>
+      <td class="col-source"><%= source %></td>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

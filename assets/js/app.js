@@ -112,6 +112,11 @@ $(function() {
     events: {
       'click th': 'headerClick'
     },
+    sortClasses: {
+      asc: 'sort-asc',
+      desc: 'sort-desc'
+    },
+
     initialize: function() {
       // Re-render the table on both sort and sync events on the collection.
       this.listenTo(this.collection, 'sort sync', this.render);
@@ -151,6 +156,19 @@ $(function() {
         var newsRow = new NewsView({model: news});
         tableBody.append(newsRow.render().el);
       });
+
+      // Remove sort-[direction] class if present.
+      this.$('thead th[class*="sort"]').removeClass(this.sortClasses.asc + ' sort ' + this.sortClasses.desc);
+
+      // Add sort-[direction] class to active column.
+      var activeColumn = this.$('thead th[column="' + this.collection.sortColumn + '"]');
+      if (this.collection.sortDirection === 1) {
+        activeColumn.addClass(this.sortClasses.asc + ' sort');
+      }
+      else {
+        activeColumn.addClass(this.sortClasses.desc + ' sort');
+      }
+
       return this;
     }
   });
@@ -193,8 +211,7 @@ $(function() {
       var searchInput = $(event.currentTarget),
           searchInputPrev = this.model.searchInput,
           input = searchInput.val();
-      console.log(input);
-      console.log(appGlobal.isAlphaNumeric(input));
+
       // If
       //   value is enetered, AND
       //   value enetered is alphanumeric, AND

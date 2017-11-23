@@ -66,6 +66,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 * {
   box-sizing: border-box;
+  transition: all 0.25s ease;
 }
 
 body {
@@ -93,10 +94,6 @@ table th {
   font-size: 16px;
   padding: 10px;
   text-align: center;
-  width: 10%;
-}
-table th:first-child {
-  width: 50%;
 }
 table tbody tr {
   border: 5px solid #FFFFFF;
@@ -136,4 +133,26 @@ table tbody tr:nth-child(odd) {
 }
 #results table th {
   text-transform: uppercase;
+  cursor: pointer;
+}
+#results table th.sort span {
+  position: relative;
+  padding-right: 25px;
+}
+#results table th.sort span:after {
+  content: '';
+  background: url(../images/sort-arrow.png) no-repeat;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  right: -5px;
+  transition: all 0.25s ease;
+}
+#results table th.sort-asc span:after {
+  transform: translateY(-50%) rotate(180deg);
+}
+#results table td.col-date {
+  text-align: center;
 }
