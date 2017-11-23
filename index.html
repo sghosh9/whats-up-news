@@ -15,7 +15,10 @@
       <thead>
         <tr>
           <th column="title">Title</th>
-          <th column="description">Description</th>
+          <th column="author">Author</th>
+          <th column="source">Source</th>
+          <th column="publishedAt">Published</th>
+          <!-- <th column="description">Description</th> -->
         </tr>
       </thead>
       <tbody>
@@ -25,7 +28,9 @@
 
     <script type="text/template" id="row-template">
       <td><a href="<%= url %>"><%= title %></a></td>
-      <td><%= description %></td>
+      <td><%= author %></td>
+      <td><%= source %></td>
+      <td><%= _.template.formatDate(publishedAt) %></td>
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

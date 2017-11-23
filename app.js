@@ -1,21 +1,49 @@
+var appGlobal = (function () {
+  return {
+    // Returns double digits preceeded by 0 for single vnumbers.
+    formatDateTwoDigits: function (number) {
+      return number < 10 ? '0' + number : number;
+    },
+    // Returns null if input string is not alphanumeric.
+    isAlphaNumeric: function (input) {
+      var regExp = /^[A-Za-z0-9\-]+$/;
+      return (input.match(regExp));
+    }
+  }
+})();
+
+// Convert a timestamp to readable date format yyyy-mm-dd hh:mm in UTC.
+_.template.formatDate = function (timestamp) {
+  var date = new Date(timestamp * 1000);
+  return date.getUTCFullYear() + '-' + (date.getUTCMonth()+1) + '-' + date.getUTCDate() + ' ' + appGlobal.formatDateTwoDigits(date.getUTCHours()) + ':' + appGlobal.formatDateTwoDigits(date.getUTCMinutes());
+}
+
 $(function() {
 
   var apiKey = '27c99f6f19554a2b84566fb9d1744b10'
   var apiURL = 'https://newsapi.org/v2/everything?apiKey=' + apiKey;
 
-  function isAlphaNumeric(input) {
-    var regExp = /^[A-Za-z0-9\-]+$/;
-    return (input.match(regExp));
-  };
-
   // Model for single news items.
   var NewsModel = Backbone.Model.extend({
     defaults: {
       title: '',
-      // author: '',
-      // publishedAt
+      author: '',
+      source: '',
+      publishedAt: 0,
       url: '',
       description: ''
+    },
+    parse: function(response) {
+      // console.log(response);
+      // Store date as timestamp for sorting.
+      var publishedTimestamp = Date.parse(response.publishedAt);
+      publishedTimestamp = publishedTimestamp/1000;
+      response.publishedAt = publishedTimestamp;
+
+      // Moves source from nested to be a direct attribute.
+      response.source = response.source.name;
+
+      return response;
     }
   });
 
@@ -31,8 +59,8 @@ $(function() {
     },
 
     // Default value for sort column and directtion.
-    sortColumn: '',
-    sortDirection: 1,
+    sortColumn: 'publishedAt',
+    sortDirection: -1,
 
     // Sort handler for News collection to trigger sorting of collection.
     sortNews: function() {
@@ -44,6 +72,9 @@ $(function() {
       // Get the values of given column.
       var value1 = news1.get(this.sortColumn),
           value2 = news2.get(this.sortColumn);
+
+      // console.log(value1);
+      // console.log(value2);
 
       value1 = (typeof value1 == 'string') ? value1.toLowerCase() : value1;
       value2 = (typeof value2 == 'string') ? value2.toLowerCase() : value2;
@@ -65,6 +96,9 @@ $(function() {
     template: _.template($('#row-template').html()),
 
     render: function() {
+      // // Convert publishedat timestamp to readable date format.
+      // var publishedDate = formatDate(this.model.attributes.publishedAt);
+      // this.model.attributes.publishedAt = publishedDate;
       this.$el.html(this.template(this.model.attributes));
       return this;
     }
@@ -163,7 +197,7 @@ $(function() {
       //   value enetered is alphanumeric, AND
       //   value is new compared to the old searched valued
       // then, start the news search with the value.
-      if (input && isAlphaNumeric(input) && input != searchInputPrev) {
+      if (input && appGlobal.isAlphaNumeric(input) && input != searchInputPrev) {
         this.model.searchInput = input;
         this.model.newsSearch(searchInput.val());
       }
