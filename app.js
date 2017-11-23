@@ -1,15 +1,15 @@
 
   // Model for single news items.
-  var SingleNews = Backbone.Model.extend({
+  var NewsModel = Backbone.Model.extend({
     defaults: {
       title: '',
       category: ''
     }
   });
 
-  // Collection for collection of single news item models SingleNews.
-  var News = Backbone.Collection.extend({
-    model: SingleNews,
+  // Collection for collection of single news item models NewsModel.
+  var NewsCollection = Backbone.Collection.extend({
+    model: NewsModel,
 
     // Default value for sort column and directtion.
     sortColumn: 'id',
@@ -40,24 +40,6 @@
     }
   });
 
-
-
-  // Dummy data
-  var NewsItems = [
-    {id: 1, title: 'Lorem', category: 'Food'},
-    {id: 2, title: 'ipsum', category: 'Politics'},
-    {id: 3, title: 'dolor', category: 'Movies'},
-    {id: 4, title: 'sit', category: 'War'},
-    {id: 5, title: 'amet', category: 'Page 3'},
-  ];
-  // Creating a collection of news objects NewsItems.
-  var NewsCollection = new News();
-  _.each(NewsItems, function(news) {
-    var NewsModel = new SingleNews(news);
-    NewsCollection.add(NewsModel);
-  });
-
-
   // View for each table row of news item.
   var NewsView = Backbone.View.extend({
     tagName: 'tr',
@@ -76,7 +58,7 @@
       'click th': 'headerClick'
     },
     initialize: function() {
-      this.listenTo(NewsCollection, 'sort', this.render);
+      this.listenTo(NewsToday, 'sort', this.render);
 
       this.render();
     },
@@ -85,29 +67,29 @@
     headerClick: function(event) {
       var clickedColumn = $(event.currentTarget),
           newSort = clickedColumn.attr('column'),
-          currentSort = NewsCollection.sortColumn;
+          currentSort = NewsToday.sortColumn;
 
       // Set the sort column of the collection to the new column.
-      NewsCollection.sortColumn = newSort;
+      NewsToday.sortColumn = newSort;
 
       // If same column was clicked ie. current sort reversed, we will just change the direction.
       if (newSort == currentSort) {
-        NewsCollection.sortDirection *= -1;
+        NewsToday.sortDirection *= -1;
       }
       // Else, set the direction to default.
       else {
-        NewsCollection.sortDirection = 1;
+        NewsToday.sortDirection = 1;
       }
 
       // Trigger sorting of collection after above updates.
-      NewsCollection.sortNews();
+      NewsToday.sortNews();
     },
 
     // Handler for sort event on collection.
     render: function() {
       var tableBody = this.$('tbody');
       tableBody.empty();
-      NewsCollection.each(function(news) {
+      NewsToday.each(function(news) {
         var newsRow = new NewsView({model: news});
         tableBody.append(newsRow.render().el);
       });
@@ -115,4 +97,49 @@
     }
   });
 
+  // Model for search form.
+  var SearchModel = Backbone.Model.extend({
+    defaults: {
+      search: '',
+    },
+    newsSearch: function(input) {
+      console.log('searched: ' + input);
+    }
+  });
+
+  // View for search form.
+  var SearchView = Backbone.View.extend({
+    el: $('#news-search'),
+    events: {
+      'keyup input': _.debounce(function(event){
+        this.triggerSearch(event);
+       }, 500),
+    },
+    triggerSearch: function(event) {
+      var searchInput = $(event.currentTarget);
+      if (searchInput.val()) {
+        this.model.newsSearch(searchInput.val());
+      }
+    }
+  });
+
+
+  // Dummy data
+  var NewsItems = [
+    {id: 1, title: 'Lorem', category: 'Food'},
+    {id: 2, title: 'ipsum', category: 'Politics'},
+    {id: 3, title: 'dolor', category: 'Movies'},
+    {id: 4, title: 'sit', category: 'War'},
+    {id: 5, title: 'amet', category: 'Page 3'},
+  ];
+  // Creating a collection of news objects NewsItems.
+  var NewsToday = new NewsCollection();
+  _.each(NewsItems, function(news) {
+    var NewsItem = new NewsModel(news);
+    NewsToday.add(NewsItem);
+  });
+
   new NewsTableView;
+
+  var newsSearch = new SearchModel();
+  new SearchView({model: newsSearch});
