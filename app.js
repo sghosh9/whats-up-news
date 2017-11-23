@@ -34,7 +34,12 @@ $(function() {
       description: ''
     },
     parse: function(response) {
-      // console.log(response);
+
+      // Convert author null values to ''.
+      if (response.author == null) {
+        response.author = '';
+      }
+
       // Store date as timestamp for sorting.
       var publishedTimestamp = Date.parse(response.publishedAt);
       publishedTimestamp = publishedTimestamp/1000;
@@ -72,9 +77,6 @@ $(function() {
       // Get the values of given column.
       var value1 = news1.get(this.sortColumn),
           value2 = news2.get(this.sortColumn);
-
-      // console.log(value1);
-      // console.log(value2);
 
       value1 = (typeof value1 == 'string') ? value1.toLowerCase() : value1;
       value2 = (typeof value2 == 'string') ? value2.toLowerCase() : value2;
