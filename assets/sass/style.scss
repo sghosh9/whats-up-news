@@ -135,6 +135,7 @@ table {
         }
       }
       &.sort-asc span:after {
+        right: -5px;
         transform: translateY(-50%) rotate(180deg);
       }
       &.sort-desc {}

@@ -213,6 +213,7 @@ table tbody tr:nth-child(odd) {
   transition: all 0.25s ease;
 }
 #results table th.sort-asc span:after {
+  right: -5px;
   transform: translateY(-50%) rotate(180deg);
 }
 #results table td.col-date {
