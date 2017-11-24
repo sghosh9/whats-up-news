@@ -109,14 +109,18 @@ $(function() {
 
   // View for entire table.
   var NewsTableView = Backbone.View.extend({
-    el: $('table'),
+    el: $('#results'),
     events: {
-      'click th': 'headerClick'
+      'click table th': 'headerClick',
+      'change #results-filter .field-filter': 'newsFilter',
+      'reset': 'resetForm'
     },
     sortClasses: {
       asc: 'sort-asc',
       desc: 'sort-desc'
     },
+
+    selectFilterTemplate: _.template($('#filter-select').html()),
 
     initialize: function() {
       // Re-render the table on both sort and sync events on the collection.
@@ -145,17 +149,68 @@ $(function() {
       this.collection.sortNews();
     },
 
-    // Handler for sort event on collection.
-    render: function() {
-      if (this.collection.models.length > 0) {
+    // Handler for filters.
+    newsFilter: function(event) {
+      var form = $(event.currentTarget).parents('#results-filter'),
+          filters = {};
+      _($(event.currentTarget).parents('#results-filter').find('.field-filter')).each(function(filterValue) {
+        if ($(filterValue).val()) {
+          filters[$(filterValue).attr('name')] = $(filterValue).val();
+          filters.active = true;
+        }
+      });
+      this.render(filters);
+    },
 
+    // Handler for form reset.
+    resetForm: function() {
+      this.render(this.collection);
+      // // When user clears the form, focus back to the input for searching again, and hide the reset button.
+      // this.$('input[name="search"]').focus();
+      // this.$('.form-reset').addClass('hide');
+
+      // // Reset to load screen as well.
+      // $('body').addClass('no-results');
+    },
+
+    // Handler for sort event on collection.
+    render: function(filterVals) {
+      var newsList = this.collection.models;
+
+      if (newsList.length > 0) {
         // Store the tbody element for multiple uses.
-        var tableBody = this.$('tbody');
+        var tableBody = this.$('tbody'),
+            filters = this.$('#results-filter'),
+            filterAuthor = {},
+            filterSource = {};
+
         // Make the table entry before appending results.
         tableBody.empty();
 
+        // Build the filters from the entire collection.
+        _(newsList).each(function(news) {
+          if(news.get('author')) {
+            filterAuthor[news.get('author')] = news.get('author');
+          }
+          if(news.get('source')) {
+            filterSource[news.get('source')] = news.get('source');
+          }
+        });
+        // Add to HTML only if they aren't already.
+        if (filters.find('.filter').length == 0) {
+          filters.prepend(this.selectFilterTemplate({id: 'source', label: 'Source', filterValues: filterSource}));
+          filters.prepend(this.selectFilterTemplate({id: 'author', label: 'Author', filterValues: filterAuthor}));
+        }
+
+        // If there are filter values, filter the collection before rendering.
+        // We don't actually alter the collection itself for future rendering.
+        if (filterVals.active) {
+          delete filterVals["active"];
+          newsList = this.collection.where(filterVals);
+        }
+
         // For each model, call the NewsView view to render each row.
-        _(this.collection.models).each(function(news) {
+        _(newsList).each(function(news) {
           var newsRow = new NewsView({model: news});
           tableBody.append(newsRow.render().el);
         });
@@ -216,7 +271,7 @@ $(function() {
           // console.log(response);
         },
       });
-    }
+    },
   });
 
   // View for search form.
@@ -281,7 +336,7 @@ $(function() {
       }
     },
 
-    // Handler for for reset.
+    // Handler for form reset.
     resetForm: function() {
       // When user clears the form, focus back to the input for searching again, and hide the reset button.
       this.$('input[name="search"]').focus();

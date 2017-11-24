@@ -37,6 +37,13 @@
     <div id="main">
 
       <section id="results">
+
+        <form id="results-filter">
+          <div class="form-actions">
+            <button type="reset" class="form-button form-reset" value="Clear form" title="Reset the form">Clear</button>
+          </div>
+        </form>
+
         <div class=table-responsive>
           <table>
             <thead>
@@ -60,6 +67,19 @@
       </section>
 
     </div>
+
+    <script type="text/template" id="filter-select">
+      <div id="filter-<%= id %>" class="filter">
+        <label for="<%= id %>"><%= label %></label>
+        <select class="field-select field-filter" name="<%= id %>">
+          <option value="">Select</option>
+          <% _(filterValues).each(function(filterValue) { %>
+            <option value="<%= filterValue %>"><%= filterValue %></option>
+          <% }); %>
+        </select>
+      </div>
+    </script>
+
 
     <script type="text/template" id="row-template">
       <td class="col-date"><%= _.template.formatDate(publishedAt) %></td>
