@@ -108,7 +108,11 @@ table {
     th {
       text-transform: uppercase;
       cursor: pointer;
+      &:hover {
+        background: lighten($baseColor, 10%);
+      }
       &.sort {
+        background: lighten($baseColor, 20%);
         span {
           position: relative;
           padding-right: 25px;

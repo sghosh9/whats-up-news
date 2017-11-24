@@ -185,6 +185,12 @@ table tbody tr:nth-child(odd) {
   text-transform: uppercase;
   cursor: pointer;
 }
+#results table th:hover {
+  background: #47aeb8;
+}
+#results table th.sort {
+  background: #6cbec6;
+}
 #results table th.sort span {
   position: relative;
   padding-right: 25px;
