@@ -182,6 +182,10 @@ label {
 }
 
 // Results
+#filter-results-empty {
+  text-align: center;
+  margin: 10px;
+}
 #results {
   display: none;
   table {
