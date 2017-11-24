@@ -194,6 +194,9 @@ $(function() {
       new NewsTableView({collection: this.newscollection});
     },
     newsSearch: function(input) {
+      // Show loader.
+      $('#search-loader').removeClass('hide');
+
       // Fetch the data from the collection's url.
       this.newscollection.fetch({
         reset: true,
@@ -201,11 +204,15 @@ $(function() {
           q: input
         },
         success: function(response) {
-          $('body').removeClass('no-results');
+          $('body').removeClass('no-results search-init');
+          // Hide loader.
+          $('#search-loader').addClass('hide');
           // console.log(response);
         },
         error: function(response) {
-          $('body').addClass('no-results');
+          $('body').removeClass('no-results search-init');
+          // Hide loader.
+          $('#search-loader').addClass('hide');
           // console.log(response);
         },
       });
