@@ -263,7 +263,7 @@ label {
 }
 
 .select2-container {
-  width: 85% !important;
+  width: 80% !important;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
@@ -336,12 +336,13 @@ label {
 }
 #results-filter .filter {
   float: left;
-  width: 48%;
+  width: 45%;
   padding: 0 10px;
 }
 #results-filter .form-actions {
-  float: left;
+  float: right;
   margin-top: -3px;
+  padding: 0 10px;
 }
 
 #results {
