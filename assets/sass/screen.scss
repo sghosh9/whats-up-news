@@ -61,16 +61,10 @@ table {
   @include theme-text-field;
 }
 .form-submit {
-  background: url(../images/go-arrow.png) no-repeat;
-  border: none;
-  text-indent: -99999px;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.75;
-  }
+  @extend %form-submit;
+}
+.form-reset {
+  @extend %form-reset;
 }
 
 
@@ -85,11 +79,25 @@ table {
   @include justify-content(center);
   form {
     @include flex(1);
-  }
-  input {
-    @include theme-text-field('dark', 30px, 0 0 20px);
-    width: 95%;
-    max-width: 800px;
+    .form-wrapper {
+      width: 95%;
+      max-width: 800px;
+      margin: auto;
+      position: relative;
+    }
+    input {
+      @include theme-text-field('dark', 30px, 0 100px 20px 0);
+      width: 100%;
+    }
+    .form-actions {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      button {
+        margin-left: 10px;
+      }
+    }
   }
 }
 

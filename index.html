@@ -13,8 +13,13 @@
 
     <section id="search">
       <form id="news-search" >
-        <input type="text" class="field-text" name="search" placeholder="What do you want to know today?" autofocus>
-        <button type="submit" class="form-button form-submit" value="Go">Go!</button>
+        <div class="form-wrapper">
+          <input type="text" class="field-text" name="search" placeholder="What do you want to know today?" autofocus>
+          <div class="form-actions">
+            <button type="submit" class="form-button form-submit" value="Submit">Go!</button>
+            <button type="reset" class="form-button form-reset" value="Clear form">Clear</button>
+          </div>
+        </div>
       </form>
     </section>
 

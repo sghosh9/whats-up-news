@@ -209,8 +209,11 @@ $(function() {
       'keyup input': _.debounce(function(event){
         this.triggerSearch(event);
        }, 500),
-      'submit': 'triggerSearch'
+      'submit': 'triggerSearch',
+      'reset': 'resetForm'
     },
+
+    // Hnalder for form submission and to trigger search.
     triggerSearch: function(event) {
       // To ensure submit button doesn't trigger form submission.
       event.preventDefault();
@@ -242,6 +245,12 @@ $(function() {
         this.model.searchInput = input;
         this.model.newsSearch(input);
       }
+    },
+
+    // Handler for for reset.
+    resetForm: function() {
+      // When user clears the form, focus back to the input for searching again.
+      this.$('input[name="search"]').focus();
     }
   });
 
