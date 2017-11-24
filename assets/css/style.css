@@ -239,6 +239,10 @@ table tbody tr:nth-child(odd) {
   width: 0;
 }
 
+label {
+  text-transform: uppercase;
+}
+
 .field-text {
   border-bottom: 1px solid #222222;
   color: #222222;
@@ -256,6 +260,14 @@ table tbody tr:nth-child(odd) {
 
 #main {
   height: 80%;
+}
+
+.select2-container {
+  width: 85% !important;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #398B93;
 }
 
 #search-loader {
@@ -311,6 +323,25 @@ table tbody tr:nth-child(odd) {
 }
 #search form .form-actions button:not(.hide) {
   margin-left: 10px;
+}
+
+#results-filter {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px 0 30px;
+  overflow: hidden;
+}
+#results-filter .form-wrapper {
+  margin: 0 -10px;
+}
+#results-filter .filter {
+  float: left;
+  width: 48%;
+  padding: 0 10px;
+}
+#results-filter .form-actions {
+  float: left;
+  margin-top: -3px;
 }
 
 #results {

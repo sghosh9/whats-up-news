@@ -151,9 +151,9 @@ $(function() {
 
     // Handler for filters.
     newsFilter: function(event) {
-      var form = $(event.currentTarget).parents('#results-filter'),
+      var filtersEl = this.$('#results-filter .form-wrapper'),
           filters = {};
-      _($(event.currentTarget).parents('#results-filter').find('.field-filter')).each(function(filterValue) {
+      _(filtersEl.find('.field-filter')).each(function(filterValue) {
         if ($(filterValue).val()) {
           filters[$(filterValue).attr('name')] = $(filterValue).val();
           filters.active = true;
@@ -164,13 +164,9 @@ $(function() {
 
     // Handler for form reset.
     resetForm: function() {
+      // When user clears the form, reset filters and render full collection.
+      this.$('#results-filter .field-filter').val(null).trigger("change");
       this.render(this.collection);
-      // // When user clears the form, focus back to the input for searching again, and hide the reset button.
-      // this.$('input[name="search"]').focus();
-      // this.$('.form-reset').addClass('hide');
-
-      // // Reset to load screen as well.
-      // $('body').addClass('no-results');
     },
 
     // Handler for sort event on collection.
@@ -180,7 +176,7 @@ $(function() {
       if (newsList.length > 0) {
         // Store the tbody element for multiple uses.
         var tableBody = this.$('tbody'),
-            filters = this.$('#results-filter'),
+            filters = this.$('#results-filter .form-wrapper'),
             filterAuthor = {},
             filterSource = {};
 
@@ -200,6 +196,8 @@ $(function() {
         if (filters.find('.filter').length == 0) {
           filters.prepend(this.selectFilterTemplate({id: 'source', label: 'Source', filterValues: filterSource}));
           filters.prepend(this.selectFilterTemplate({id: 'author', label: 'Author', filterValues: filterAuthor}));
+
+          filters.find('.field-filter').select2();
         }
 
         // If there are filter values, filter the collection before rendering.
@@ -246,7 +244,7 @@ $(function() {
       // Create a NewsCollection collection with parsing on its model enabled.
       this.newscollection = new NewsCollection({parse: true});
       // Pass it to the NewsTableView view.
-      new NewsTableView({collection: this.newscollection});
+      this.newsview = new NewsTableView({collection: this.newscollection});
     },
     newsSearch: function(input) {
       // Show loader.
@@ -344,6 +342,9 @@ $(function() {
 
       // Reset to load screen as well.
       $('body').addClass('no-results');
+
+      // Remove the previous filters as well.
+      $('#results-filter .filter').remove();
     }
   });
 
@@ -354,5 +355,7 @@ $(function() {
   var newsSearch = new SearchModel();
   // Pass it to the SearchView view.
   new SearchView({model: newsSearch});
+
+  $('select').select2();
 
 });

@@ -72,6 +72,9 @@ table {
   opacity: 0;
   width: 0;
 }
+label {
+  text-transform: uppercase;
+}
 .field-text {
   @extend %text-field;
   @include theme-text-field;
@@ -94,6 +97,16 @@ table {
 #main {
   height: 80%;
 }
+
+
+// Select2 overrides
+.select2-container {
+  width: 85% !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: $baseColor;
+}
+
 
 // Search loader
 #search-loader {
@@ -139,6 +152,26 @@ table {
         margin-left: 10px;
       }
     }
+  }
+}
+
+// Results filters
+#results-filter {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px 0 30px;
+  overflow: hidden;
+  .form-wrapper {
+    margin: 0 -10px;
+  }
+  .filter {
+    float: left;
+    width: 48%;
+    padding: 0 10px;
+  }
+  .form-actions {
+    float: left;
+    margin-top: -3px;
   }
 }
 
