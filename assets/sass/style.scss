@@ -19,9 +19,10 @@ html, body {
   height: 100%;
 }
 body {
-  color: $theme-light-font-color;
-  font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  color: $base-font-color;
+  line-height: $base-line-height;
+  font-size: $base-font-size;
+  font-family: $base-font-family;
 }
 a {
   text-decoration: none;
@@ -29,6 +30,14 @@ a {
   &:hover, &:focus, &:active {
     color: lighten($baseColor, 20%);
   }
+}
+h1 {
+  font-size: 32px;
+  line-height: 45px;
+}
+h2 {
+  font-size: 30px;
+  line-height: 40px;
 }
 section {
   padding: 20px 15px;
@@ -72,11 +81,17 @@ table {
   @extend %form-reset;
 }
 
+#page-title {
+  display: none;
+  color: $theme-dark-font-color;
+  font-size: 50px;
+  line-height: 70px;
+  margin-bottom: 100px;
+}
 
 #main {
   height: 80%;
 }
-
 
 // Search
 #search {
@@ -88,10 +103,10 @@ table {
   @include align-items(center);
   @include justify-content(center);
   form {
+    width: 95%;
+    max-width: 960px;
     @include flex(1);
     .form-wrapper {
-      width: 95%;
-      max-width: 800px;
       margin: auto;
       position: relative;
     }
@@ -159,7 +174,6 @@ table {
   @include align-items(center);
   @include justify-content(center);
   height: 100%;
-  font-size: 30px;
 }
 
 .showing-results {
@@ -174,6 +188,9 @@ table {
 
 // Default screen
 .no-results {
+  #page-title {
+    display: block;
+  }
   #search {
     height: 100%;
   }

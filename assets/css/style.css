@@ -96,8 +96,9 @@ html, body {
 
 body {
   color: #222222;
+  line-height: 20px;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -106,6 +107,16 @@ a {
 }
 a:hover, a:focus, a:active {
   color: #6cbec6;
+}
+
+h1 {
+  font-size: 32px;
+  line-height: 45px;
+}
+
+h2 {
+  font-size: 30px;
+  line-height: 40px;
 }
 
 section {
@@ -145,6 +156,14 @@ table tbody tr:nth-child(odd) {
   padding: 8px 0;
 }
 
+#page-title {
+  display: none;
+  color: #FFFFFF;
+  font-size: 50px;
+  line-height: 70px;
+  margin-bottom: 100px;
+}
+
 #main {
   height: 80%;
 }
@@ -162,12 +181,12 @@ table tbody tr:nth-child(odd) {
   justify-content: center;
 }
 #search form {
+  width: 95%;
+  max-width: 960px;
   -webkit-flex: 1;
   flex: 1;
 }
 #search form .form-wrapper {
-  width: 95%;
-  max-width: 800px;
   margin: auto;
   position: relative;
 }
@@ -236,7 +255,6 @@ table tbody tr:nth-child(odd) {
   -webkit-justify-content: center;
   justify-content: center;
   height: 100%;
-  font-size: 30px;
 }
 
 .showing-results #results {
@@ -246,6 +264,9 @@ table tbody tr:nth-child(odd) {
   display: none;
 }
 
+.no-results #page-title {
+  display: block;
+}
 .no-results #search {
   height: 100%;
 }
