@@ -60,6 +60,18 @@ table {
   @extend %text-field;
   @include theme-text-field;
 }
+.form-submit {
+  background: url(../images/go-arrow.png) no-repeat;
+  border: none;
+  text-indent: -99999px;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.75;
+  }
+}
 
 
 // Search

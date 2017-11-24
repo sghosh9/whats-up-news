@@ -118,6 +118,19 @@ table tbody tr:nth-child(odd) {
   padding: 8px 0;
 }
 
+.form-submit {
+  background: url(../images/go-arrow.png) no-repeat;
+  border: none;
+  text-indent: -99999px;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+.form-submit:hover {
+  opacity: 0.75;
+}
+
 #search {
   background: #222222;
   padding: 20px 15px;
