@@ -19,12 +19,12 @@
 
 %form-submit {
   @extend %form-button;
-  background: url(../images/go-arrow.png) no-repeat;
+  background: url(../images/icon-sprite.png) no-repeat -5px -0px;
 }
 
 %form-reset {
   @extend %form-button;
-  background: url(../images/reset-arrow.png) no-repeat;
+  background: url(../images/icon-sprite.png) no-repeat -5px -37px;
 }
 
 @mixin theme-text-field($theme: light, $font-size: 14px, $padding: 8px 0) {
