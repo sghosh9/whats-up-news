@@ -57,7 +57,7 @@ table {
       border-left: none;
       border-right: none;
       td {
-        padding: 25px;
+        padding: 30px 20px 30px 0;
       }
       &:nth-child(odd) {
         background: lighten($baseColor, 55%);
