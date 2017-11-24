@@ -1,13 +1,7 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-
 @import "compass/reset";
 @import "compass/css3";
 @import "variables";
 @import "mixins";
-
 
 
 // Global
@@ -41,8 +35,14 @@ h2 {
 }
 section {
   padding: 20px 15px;
+  overflow: hidden;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: scroll;
 }
 table {
+  min-width: 700px;
   th {
     background: $baseColor;
     border: 1px solid $theme-dark-font-color;
@@ -96,7 +96,6 @@ table {
 // Search
 #search {
   background: $color-black;
-  padding: 20px 15px;
   text-align: center;
   height: 100px;
   @include display-flex();
@@ -165,6 +164,9 @@ table {
       text-align: center;
       min-width: 170px;
     }
+    td.col-title {
+      min-width: 300px;
+    }
   }
 }
 
@@ -173,6 +175,7 @@ table {
   @include display-flex();
   @include align-items(center);
   @include justify-content(center);
+  text-align: center;
   height: 100%;
 }
 
@@ -196,5 +199,72 @@ table {
   }
   #main {
     display: none;
+  }
+}
+
+
+
+// Responsive
+@media (max-width: 767px) {
+  body {
+    line-height: $base-line-height-small;
+    font-size: $base-font-size-small;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  table {
+    th {
+      padding: 5px;
+      font-size: $base-font-size;
+    }
+    tbody {
+      tr {
+        td {
+          padding: 5px;
+        }
+      }
+    }
+  }
+
+  #page-title {
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 50px;
+  }
+
+  // Search
+  #search {
+    height: 70px;
+    form {
+      input {
+        @include theme-text-field('dark', 16px, 0 60px 10px 0);
+      }
+      .form-actions {
+        button:not(.hide) {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  // Results
+  #results {
+    table {
+      th.sort {
+        span {
+          padding-right: 20px;
+          &:after {
+            transform: translateY(-50%) scale(0.75);
+          }
+        }
+      }
+      td.col-date {
+        text-align: center;
+        min-width: 120px;
+      }
+    }
   }
 }
